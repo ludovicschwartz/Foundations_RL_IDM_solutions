@@ -1,7 +1,120 @@
 %! TEX root = ./main.tex
-\begin{exercise}[TODO]{}
+\begin{exercise}[]{ERM in Online Learning}
+Consider the problem of Online Supervised Learning with indicator loss $ \ell(f(x),y) = \mathbb{I}\{f(x)\neq y\} $, $
+\mathcal{Y} = \mathcal{Y}^{\prime} = \{ 0,1 \} $, and a finite class $ \F $.
+\begin{enumerate}
+
+	\item Exhibit a class $ \F $ for which ERM cannot ensure sublinear growth of regret for all sequences, i.e.
+		there exists a sequence $ (x^{1},y^{1}), \ldots, (x^{T},y^T) $ such that 
+\begin{equation*}
+	\sum_{t=1}^{T}\ell(\hat{f}^t(x^t),y^t) - \min_{f\in\F}\sum_{t=1}^T\ell(f(x^{t}),y^{t}) = \Omega(T),
+\end{equation*}
+where $ \hat{f}^t $ is the empirical minimizer for the indicator loss on $ (x^1,y^1),\ldots,(x^{t-1},y^{t-1}). $ Note :
+The construction must have $ |\F| \leq C $, where C is an absolute constant that does not depend on T.
+
+	\item Show that if data are i.i.d., then in expectation over the data, ERM attains a sublinear bound $
+		O(\sqrt{T\log |\F|}) $ on regret for any finite class $ \F $.
+\end{enumerate}
 \end{exercise}
 
 \begin{solution}[]
-    ee
+1. We will do a constrution with $ |\F| = 2 $, we consider the two constants functions $ f_0 = 0 $ and $ f_1 = 1 $. We
+look at the following $ (y_t)_{t=1,\cdot } $ :
+\begin{equation*}
+	1,0,0,1,1,0,0,\ldots
+\end{equation*}
+Everytime the algorithm sees more 1 than 0, it will predict 1 and make a mistake and inversely it it sees more 0 than 1
+(If there is the same number, ties are broken arbitrarilies and the algorithm will be wrong half the time). That means that
+after T round, our algorithm makes at least $ \frac{3T}{4} - 3 $ mistakes. Conversely, either $ f_1 $ or $ f_0 $ will
+make less than $ \frac{T}{2} $ mistakes. This means that ERM suffers linear regret on that sequence.
+\vspace{5mm}
+
+2. We operate under the more general assumption that $ \ell $ is bounded in $ [0,1] $. We introduce some notation :
+\begin{itemize}
+
+	\item For a fixed $ f\in \F $, $ \hat{\ell}_t(f) = \sum_{s=1}^{t} \ell(f(x_t),y_t) $, $ \hat{f}^{t+1} = \argmin_{f \in
+		\F} \hat{\ell_t}(f) $.
+	\item $ \mu \in \Delta(\mathcal{X}\times \mathcal{Y}) $ the distribution under which the data is drawn.
+	\item For a fixed $ f\in F $, $ \bar{\ell}(f) = \EEs{\ell(f(x),y)}{x,y\sim \mu} $, $ f^{*} = \argmin_{f\in \F}
+		\bar{\ell}(f) $.
+\end{itemize}
+We start by a decomposition of the regret :
+\begin{align*}
+	\EE{R_n} &= \EE{\sum_{t=1}^{T}\ell(\hat{f}^{t}(x_t),y_t) - \min_{f\in \F}\sum_{t=1}^{T}\ell(f(x_t),y_t)}\\
+		 &=\EE{\sum_{t=1}^{T}\left[\ell(\hat{f}^t(x_t,y_t)) - \bar{\ell}(f^{*})\right]} + T\EE{\bar{\ell}(f^{*})-
+		 \hat{\ell}_T(\hat{f}^{T+1})}
+\end{align*}
+
+Our main technical tool is Hoeffding's Lemma. Since $ \ell $ is bounded, we have that for a fixed f, for any $
+\delta > 0 $
+\begin{equation*}
+	\PP{|\bar{\ell}(f) - \hat{\ell}_t(f)| \geq \sqrt{\frac{\log \left( \frac{2}{\delta} \right)}{2t}}} \leq \delta.
+\end{equation*}
+In particular, taking a union bound over all functions in $ \F $, we have that :
+
+\begin{equation*}
+	\PP{\exists f \in \F, |\bar{\ell}(f) - \hat{\ell}_t(f)| \geq \sqrt{\frac{\log \left( \frac{2 |\F|}{\delta} \right)}{2t}}} \leq \delta.
+\end{equation*}
+
+We also state the following Lemma for integrating tail bounds :
+\begin{lemma}
+\label{lemma:tail_bounds}
+	Let A,B be positive reals and X a real valued random variable such that $ \PP{X\geq \sqrt{A\log \left(
+	\frac{B}{\delta} \right)}} \leq \delta $, then
+\begin{equation*}
+	\EE{X} \leq 2\sqrt{A\log B}.
+\end{equation*}
+
+\end{lemma}
+\begin{proof}
+We have by a change of variable $ \PP{X- \sqrt{A\log(B)}\geq \epsilon^2} \leq \exp{(\frac{-\epsilon^2}{A})}$. Then
+\begin{align*}
+\EE{X} &= \sqrt{A \log B} + \EE{X - \sqrt{A \log B}}\\
+       &\leq \sqrt{A \log B} + \int_{0}^{\infty}\PP{X - \sqrt{A\log B}\geq \epsilon} \,d \epsilon\\
+       &= \sqrt{A \log B} + \int_{0}^{\infty}\exp{-\frac{\epsilon^2}{A}}\, d \epsilon \\
+       &= \sqrt{A \log B} + \frac{\sqrt{A \pi}}{2} \\
+       &\leq 2 \sqrt{A \log B}.
+\end{align*}
+
+\end{proof}
+
+Now, with probability at least $ 1- \delta $, we have 
+\begin{align*}
+	|\bar{\ell}(f^{*}) - \hat{\ell}_T(f^{T+1})| \leq \sqrt{\frac{\log \left( \frac{2 |\F|}{\delta} \right)}{2T}} .
+\end{align*}
+Integrating this bound with Lemma~\ref{lemma:tail_bounds}, we get 
+\begin{equation*}
+	T \EE{\bar{\ell}(f^{*})- \hat{\ell_T}(\hat{f^{T+1}})} \leq \sqrt{2T \log (2|\F|)}.
+\end{equation*}
+It remains to deal with the term $ \sum_{t=1}^{T}\ell(\hat{f}^t(x_y,y_t)) - \bar{\ell}(f^{*}) $. Here, since $ x_t,y_t $
+is independent from $ \hat{f}^t $, we have that for any $ t\geq 2 $,
+\begin{equation*}
+	\EEc{\ell(\hat{f}^t(x_t),y_t)}{(x_1,y_1,\ldots, x_{t-1},y_{t-1})} = \bar{\ell}(\hat{f}^t)
+\end{equation*}
+Now we bound with probability at least $ 1 - \delta $
+\begin{align*}
+	\bar{\ell}(\hat{f}^{t}) &= \hat{\ell}_{t-1}(\hat{f}^{t}) + (\bar{\ell}(\hat{f}^{t})- \hat{\ell}_{t-1}(\hat{f}^{t}))\\
+				&\leq \hat{\ell}_{t-1}(f^{*}) +(\bar{\ell}(\hat{f}^{t})- \hat{\ell}_{t-1}(\hat{f}^{t}))\\
+				&= \bar{\ell}(f^{*}) + (\hat{\ell}_{t-1}(f^{*})- \bar{\ell}(f^{*})) +(\bar{\ell}(\hat{f}^{t})- \hat{\ell}_{t-1}(\hat{f}^{t}))\\
+				&\leq \bar{\ell}(f^{*}) + \sqrt{\frac{2\log \left( \frac{2 |\F|}{\delta} \right)}{t-1}}.
+\end{align*}
+By the tower rule of expectation, we have that
+\begin{align*}
+	\EE{\ell(\hat{f}^{t}(x_t),y_t) - \bar{\ell}(f^{*})} &= \EE{\EEc{\ell(\hat{f}^t(x_t),y_t)}{(x_1,y_1,\ldots,
+	x_{t-1},y_{t-1})} - \bar{\ell}(f^{*})}\\
+							    &= \EE{\bar{\ell}(\hat{f}^{t}) - \bar{\ell}(f^{*})}\\
+							    &\leq \sqrt{\frac{8\log \left( 2 |\F|
+						    \right)}{t-1}}.
+\end{align*}
+Where the last line is obtained integrating the tail bound via Lemma~\ref{lemma:tail_bounds}.
+Now it only remains to put everything together, we have 
+\begin{align*}
+	\EE{R_n} &= \EE{\sum_{t=1}^{T}\left[\ell(\hat{f}^t(x_t,y_t)) - \bar{\ell}(f^{*})\right]} + T\EE{\bar{\ell}(f^{*})-
+		 \hat{\ell}_T(\hat{f}^{T+1})}\\
+		 &\leq 1 + \sum_{t=2}^{T} \sqrt{\frac{8 \log (2|\F|)}{t-1}} + \sqrt{2T\log(2|\F|)}.\\
+		 &\leq \sqrt{32T\log(2|\F|)} + \sqrt{2T\log(2 |F|)}\\
+		 &= O(\sqrt{T\log|\F|}),
+\end{align*}
+where the second inequality comes from the elementary inequality $ \sum_{t=2}^{T} \frac{1}{\sqrt{t-1}} \leq 2(\sqrt{T}
+-1) $.
 \end{solution}

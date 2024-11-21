@@ -1,8 +1,36 @@
 %! TEX root = ./main.tex
 \begin{exercise}[]{}
-Consider the setting of Proposition 1 where $ (x^{1}, y^{1}),\ldots,(x^{T},y^{T})$
+Consider the setting of Proposition 1 where $ (x^{1}, y^{1}),\ldots,(x^{T},y^{T})$ are i.i.d., $\mathcal{F} = \{f : \X \to [0,1] \}$ is finite,  
+the true regression function satisfies $f^* \in \F$, and $Y_i \in [0, 1]$ almost surely. Prove that empirical risk minimizer $\wh f$ with respect 
+to square loss satisfies the following bound on excess risk. With probability at least $1 - \delta$:
+\begin{equation*}
+    \E(\wh f) \preceq \frac{\log(|\F|/\delta)}{T}.
+\end{equation*}
 \end{exercise}
 
+1. For a fixed function $f \in \F$, consider the random variable 
+\[Z_i(f) = (f(x^i)-y^i)^2 -(f^*(x^i)-y^i)^2\]
+ for $i=1,\ldots,T.$ Show that
+ \[ \EE{Z_i(f)} = \EE{(f(x^i)- f^*(x^i))^2} = \E(f).\]
+2. Show that for any fixed $f \in \F$, the variance $\Var{Zi(f)}$ is bounded as
+\[ \Var{Z_i(f)}\leq 4\EE{(f(x^i)-f^*(x^i))^2}.\]
+3. Apply Bernstein’s inequality (Lemma 5) to show that with for any $f \in \F$, with probability
+at least $1-\delta$,
+\[ \E(f) \leq 2(\wh L(f)-\wh L(f^*))+\frac{C \log(1/\delta)}{T},\] 
+for an absolute constant C, where $\wh L(f) = \frac{1}{T} \sum_{t=1}^T (f(x^t) - y^t)^2$.
+4. Extend this probabilistic inequality to simultaneously hold for all $f \in \F$ by taking the 
+union bound over $f \in \F$. Conclude as a consequence that the bound holds for $\wh f$, the empirical minimizer, implying (1.38)
 \begin{solution}[]
-    azezaeaz
+1. Developping the squares and rearranging the terms, we have
+   \[Z_i(f) = (f(x^i)-f^*(x^i))^2 +2(f^*(x^i)-y_i)(f^*(x^i)-f(x^i)).\] 
+ Now remark that $\EE{f^*(x_i)-y_i)}= \EE{\EEc{f^*(x_i)-y_i)}{x_i}} = 0$ 
+ where we have used the tower rule for the first equality and the fact that $f^*(x_i)=\EEc{y_i}{x=x_i}$.
+Thus
+\begin{align*}
+    \EE{Z_i(f)} &= \EE{(f(x^i)-f^*(x^i))^2} + \EE{2(f^*(x^i)-y_i)(f^*(x^i)-f(x^i))} \text{(by linearity of $\E{.}$)} \\
+                &= \EE{(f(x^i)-f^*(x^i))^2}
+\end{align*}
+Finally the fact that $\EE{(f(x^i)-f^*(x^i))^2}= \EE{f}$ comes from Lemma 1.
+
+2.
 \end{solution}

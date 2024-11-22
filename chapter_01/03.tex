@@ -1,6 +1,88 @@
 %! TEX root = ./main.tex
-\begin{exercise}[TODO]{}
+\begin{exercise}[]{Low Noise}
+1. For a nonnegative random variable X, prove that for any $ \eta >0 $,
+\begin{equation*}
+	\log \EE{\exp{(- \eta (X - \EE{X}))}} \leq  \frac{\eta^2}{2}\EE{X^2}.
+\end{equation*}
+Hint : use the fact that $ \log x \leq x-1 $ and $ \exp(-x) \leq 1 - x + x^2/2 $for $ x\geq 0 $.
+
+2. Consider the setting of Proposition 3, Part 1(Generic Loss). Prove that the randomized variant of the Exponential
+Weights Algorithm satisfies, for any $ f^{*} \in \F $,
+\begin{equation*}
+	\sum_{t=1}^{T}\EEs{\ell(\hat{f}^{t}(x^t),y^t)}{\hat{f}^{t}\sim q^{t}} - \ell(f^{*}(x^t),y^t) \leq
+	\frac{\eta}{2}\sum_{t=1}^{T}\EEs{\ell(\hat{f}^{t}(x^t),y^t)^2}{\hat{f}^{t}\sim q^{t}} + \frac{\log |\F|}{\eta}.
+\end{equation*}
+for any sequence of data and nonnegative losses. Hint : replace Hoeffding's Lemma by the result of the first question.
+
+3. Suppose $ \ell(f(x),y) \in [0,1] $ for all $ x \in \X, y \in \Y $ and $ f\in \F $. Suppose that there is a "perfect
+expert $ f^{*}\in \F $ such taht $ \ell(f^{*}(x^t)y^t) = 0 $ for all $ t\in [T] $. Conclude that the above algorithm,
+with an appropriate choice of $ \eta $, enjoys a bound of $ O(\log |\F|) $ on the cumulative loss of the algorithm
+(equivalently, the fast rate $ \frac{\log |F|}{T} $ for the average regret). This setting is called "zero noise."
+
+4.Consider the binary classification problem with indicator loss, and suppose $ \F $ contains a perfect expert, as
+above. The \textit{Halving Algorithm} maintains a version space $ \F^{t} = \{ f \in \F : f(x^s)=y^s, s<t \} $ and given
+$ x^{t} $, follows the majority vote of remaining experts in $ \F^{t} $. Show that this algorithm incurs cumulative loss
+at most $ O(\log |\F|) $. Hence, the Exponential Weights Algorithm can be viewed as an extension of the Halving
+algorithm to settings where the optimal loss is non-zero.
+
 \end{exercise}
 
-\begin{solution}[TODO]
+\begin{solution}[]
+1. Using the hint, we have
+\begin{align*}
+	\log \EE{\exp{(-\eta (X - \EE{X}))}} &= \eta \EE{X} + \log \EE{\exp{-\eta X}}\\
+					     &\leq \eta \EE{X}+ \EE{\exp(-\eta X ) -1}	\\
+					     &\leq \eta \EE{X} + \EE{1 -\eta X + \frac{\eta^2 X^2}{2}-1}\\
+					     &= \eta \EE{X} - \eta \EE{X} + \frac{\eta^2}{2}\EE{X^2}\\
+					     &= \frac{\eta^2}{2} \EE{X^2}.
+\end{align*}
+Where the first inequality is valid because the exponential is always positive and the second one because $ \eta X \geq
+0$.
+
+2. We take the same notation as in the proof of Proposition 3. We have the potential
+$ \Phi_\eta^t = -\log \sum_{f \in \F}\exp{\left( -\eta \sum_{i=1}^{t}\ell(f(x^{i}),y^i) \right)} $.
+Rewriting the inequality of question 1 as $ \eta \EE{X} \leq -\log \EE{\exp{X}} + \frac{\eta^2}{2}\EE{X^2} $ and
+applying it to $ X = \ell(\hat{f}^{t}(x^t),y^t) \geq  0 $ where $ \hat{f}^t \sim q_t $, we get
+\begin{align*}
+	\eta \EEs{\ell(f(x^t),y^t)}{f\sim q_t} &\leq -\log \EEs{\exp{(\ell(f(x^t),y^t))}}{f\sim q_t} +
+	\frac{\eta^2}{2}\EEs{\ell(f(x^t),y^t)^2}{f\sim q_t}.
+\end{align*}
+As in the proof of Proposition 3, we remark that
+\begin{equation*}
+	-\log\EEs{\exp{(\ell(f(x^t),y^t))}}{f\sim q_t} = \Phi_{\eta}^t - \Phi_{\eta}^{t-1},
+\end{equation*}
+and summing over t we get
+\begin{equation*}
+	\eta \sum_{t=1}^{T}\EEs{\ell(f(x^t),y^t)}{f \sim q_t} \leq \Phi_{h}^{T} - \Phi_{n}^{0} +
+	\frac{\eta^2}{2}\sum_{t=1}^{T}\EEs{\ell(f(x^t),y^t)^2}{f\sim q_t}.
+\end{equation*}
+As in the proof of Proposition 3, we can upper bound for any $ f^{*}\in \F $ .
+\begin{equation*}
+	\Phi_{\eta}^T \leq \eta \sum_{t=1}^{T}\ell(f^{*}(x^t),y^t),
+\end{equation*}
+
+while $ \Phi_{\eta}^0 = - \log |\F|$
+. Hence we have that for any $ f^{*}\in \F $
+\begin{equation*}
+	\sum_{t=1}^{T}\EEs{\ell(\hat{f}^{t}(x^t),y^t)}{\hat{f}^{t}\sim q^{t}} - \ell(f^{*}(x^t),y^t) \leq
+	\frac{\eta}{2}\sum_{t=1}^{T}\EEs{\ell(\hat{f}^{t}(x^t),y^t)^2}{\hat{f}^{t}\sim q^{t}} + \frac{\log |\F|}{\eta}.
+\end{equation*}
+
+3. We choose $ \eta = 1$, using the fact that $ \ell(\cdot ,\cdot ) \in [0,1] $, we have that $ \ell^2 \leq \ell $.
+Hence with the result of the previous question and the choice of $ f^{*} $ as the perfect expert, we get 
+\begin{equation*}
+	\sum_{t=1}^{T} \EEs{\ell(f(x^t),y^t)}{f\sim q_t} \leq \frac{1}{2} \sum_{t=1}^{T}\EEs{\ell(f(x^t),y^t)}{f\sim
+	q_t} +  \log |\F|.
+\end{equation*}
+And 
+\begin{equation*}
+	\sum_{t=1}^{T}\EEs{\ell(f(x^t),y^t)}{f \sim q_t} - \ell(f^{*}(x_t),y_t) \leq 2 \log |\F|.
+\end{equation*}
+
+4. It is easy to see that for this algorithm at a given round, either no mistakes is made or at least half of the
+experts are discarded. Since this can happen only $ \lfloor{\log_2|\F|}\rfloor $ times, the regret is of order $ O(\log |\F|)
+$.
+
+
+
 \end{solution}

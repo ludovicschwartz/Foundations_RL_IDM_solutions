@@ -1,5 +1,5 @@
 %! TEX root = ./main.tex
-\begin{exercise}[]{}
+\begin{exercise}[]{Proposition 1, Part 2.}
 Consider the setting of Proposition 1 where $ (x^{1}, y^{1}),\ldots,(x^{T},y^{T})$ are i.i.d., $\mathcal{F} = \{f : \X \to [0,1] \}$ is finite,  
 the true regression function satisfies $f^* \in \F$, and $Y_i \in [0, 1]$ almost surely. Prove that empirical risk minimizer $\wh f$ with respect 
 to square loss satisfies the following bound on excess risk. With probability at least $1 - \delta$:
@@ -30,10 +30,51 @@ Thus
     \EE{Z_i(f)} &= \EE{(f(x^i)-f^*(x^i))^2} + \EE{2(f^*(x^i)-y_i)(f^*(x^i)-f(x^i))} \text{(by linearity of $\E{.}$)} \\
                 &= \EE{(f(x^i)-f^*(x^i))^2}
 \end{align*}
-Finally the fact that $\EE{(f(x^i)-f^*(x^i))^2}= \E{f}$ comes from Lemma 1.
+Finally the fact that $\EE{(f(x^i)-f^*(x^i))^2}= \E(f)$ comes from Lemma 1.
 
 2. From König-Huygens formula we can write 
-\[\Var{Z_i(f)}=\EE{Z_i(f)^2}-\EE{Z_i(f)}^2.\] 
+\[ \Var{Z_i(f)}=\EE{Z_i(f)^2}-\EE{Z_i(f)}^2.\] 
 By definition $f : \X \to [0,1]$.
+
+
+3. First we recall Bernstein's inequality:
+\begin{lemma}
+    \label{lemma:Bernstein}
+    Let $Z_1,\ldots,Z_T$ be i.i.d with variance $\Var{Z_i(f)}=\sigma^2$, and range $Z-\EE{Z}\leq B$ almost surely.
+    Then with probability at least $1-\delta$,
+    \[ \frac{1}{T}\sum_{i=1}^{T}Z_i -\EE{Z}\leq \sigma\sqrt{\frac{2\log(1/\delta)}{T}}+\frac{B\log(1/\delta)}{3T}.\]
+\end{lemma}
+Let's apply this Lemma \ref{lemma:Bernstein} to $-Z_i(f)$ where $B= 2$ and $\sigma \leq 2\sqrt{\E(f)}$ because of question 2.    
+\begin{equation}
+    \label{equation:Bernstein}
+    \wh L(f^*)- \wh L(f) + \E(f) \leq \sqrt{\frac{8\E(f)\log(1/\delta)}{T}}+\frac{2\log(1/\delta)}{3T}
+\end{equation}
+where we have used the fact that $\wh L(f)-\wh L(f^*) = \frac{1}{T}\sum_{t=1}^{T}Z_i(f)$.
+Now in order to get the bound expected in the question we will need to use the following lemma which is a rewriting of the AMGM inequality.
+\begin{lemma}
+    \label{lemma:AMGM}
+  For any $a,b\geq 0$ and $\eta >0$ we have,
+  \[ \sqrt{ab} \leq \frac{a}{4\eta} +\eta b.\] 
+\end{lemma}
+\begin{proof}
+    Starting from AMGM we have $\sqrt{xy} \leq \frac{x+y}{2}$.
+    Since the inequality holds for any $x,y \geq 0$ we can pick $x = \frac{a}{2\eta}$ and $y=2\eta b$.
+    to conclude the proof.
+\end{proof}
+Let's apply Lemma \ref{lemma:AMGM} with $a=8\E(f)$ and $b=\frac{\log(1/\delta)}{T}$, then for $\eta>0$ we have
+\begin{align*}
+    \sqrt{\frac{8\E(f)\log(1/\delta)}{T}}&\leq \frac{2\E(f)}{\eta} + \eta \frac{\log(1/\delta)}{T}.
 \end{align*}
+Taking $\eta=\frac{1}{2}$, substituing the above inequality in \ref{equation:Bernstein} and rearranging terms gives
+\[ \E(f) \leq 2( \wh L(f^*)- \wh L(f))+\frac{7\log(1/\delta)}{6T}.\]
+
+4. For sake of concreteness we detail the union bound argument. Let $\delta' >0$, from the previous question we have
+\begin{align*}
+\PP{\exists f \in \F:\E(f)\geq 2( \wh L(f^*)- \wh L(f))+\frac{7\log(1/\delta')}{6T}}&=   \PP{\bigcup_{f\in\F}\E(f) \geq 2( \wh L(f^*)- \wh L(f))+\frac{7\log(1/\delta')}{6T}}\\
+&\leq \sum_{f\in\F}  \PP{\E(f) \geq 2( \wh L(f^*)- \wh L(f))+\frac{7\log(1/\delta')}{6T}}\\
+&\leq \delta' |\F|
+\end{align*} 
+ Now taking $\delta'=\frac{\delta}{|\F|}$ we have with probability $1-\delta$ that for any $f$
+ \[ \E(f) \leq 2( \wh L(f^*)- \wh L(f))+\frac{7\log(|\F|/\delta)}{6T}\]
+ and in particular this holds for $\wh f$.
 \end{solution}

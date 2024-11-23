@@ -15,7 +15,7 @@ Weights Algorithm satisfies, for any $ f^{*} \in \F $,
 for any sequence of data and nonnegative losses. Hint : replace Hoeffding's Lemma by the result of the first question.
 
 3. Suppose $ \ell(f(x),y) \in [0,1] $ for all $ x \in \X, y \in \Y $ and $ f\in \F $. Suppose that there is a "perfect
-expert $ f^{*}\in \F $ such taht $ \ell(f^{*}(x^t)y^t) = 0 $ for all $ t\in [T] $. Conclude that the above algorithm,
+expert $ f^{*}\in \F $ such that $ \ell(f^{*}(x^t)y^t) = 0 $ for all $ t\in [T] $. Conclude that the above algorithm,
 with an appropriate choice of $ \eta $, enjoys a bound of $ O(\log |\F|) $ on the cumulative loss of the algorithm
 (equivalently, the fast rate $ \frac{\log |F|}{T} $ for the average regret). This setting is called "zero noise."
 
@@ -51,7 +51,7 @@ As in the proof of Proposition 3, we remark that
 \begin{equation*}
 	-\log\EEs{\exp{(\ell(f(x^t),y^t))}}{f\sim q_t} = \Phi_{\eta}^t - \Phi_{\eta}^{t-1},
 \end{equation*}
-and summing over t we get
+and summing over $t$ we get
 \begin{equation*}
 	\eta \sum_{t=1}^{T}\EEs{\ell(f(x^t),y^t)}{f \sim q_t} \leq \Phi_{h}^{T} - \Phi_{n}^{0} +
 	\frac{\eta^2}{2}\sum_{t=1}^{T}\EEs{\ell(f(x^t),y^t)^2}{f\sim q_t}.
@@ -61,8 +61,7 @@ As in the proof of Proposition 3, we can upper bound for any $ f^{*}\in \F $ .
 	\Phi_{\eta}^T \leq \eta \sum_{t=1}^{T}\ell(f^{*}(x^t),y^t),
 \end{equation*}
 
-while $ \Phi_{\eta}^0 = - \log |\F|$
-. Hence we have that for any $ f^{*}\in \F $
+while $ \Phi_{\eta}^0 = - \log |\F|$. Hence we have that for any $ f^{*}\in \F $
 \begin{equation*}
 	\sum_{t=1}^{T}\EEs{\ell(\hat{f}^{t}(x^t),y^t)}{\hat{f}^{t}\sim q^{t}} - \ell(f^{*}(x^t),y^t) \leq
 	\frac{\eta}{2}\sum_{t=1}^{T}\EEs{\ell(\hat{f}^{t}(x^t),y^t)^2}{\hat{f}^{t}\sim q^{t}} + \frac{\log |\F|}{\eta}.

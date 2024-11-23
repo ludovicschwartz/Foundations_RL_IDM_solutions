@@ -10,7 +10,7 @@ Consider the problem of Online Supervised Learning with indicator loss $ \ell(f(
 	\sum_{t=1}^{T}\ell(\hat{f}^t(x^t),y^t) - \min_{f\in\F}\sum_{t=1}^T\ell(f(x^{t}),y^{t}) = \Omega(T),
 \end{equation*}
 where $ \hat{f}^t $ is the empirical minimizer for the indicator loss on $ (x^1,y^1),\ldots,(x^{t-1},y^{t-1}). $ Note :
-The construction must have $ |\F| \leq C $, where C is an absolute constant that does not depend on T.
+The construction must have $ |\F| \leq C $, where C is an absolute constant that does not depend on $T$.
 
 	\item Show that if data are i.i.d., then in expectation over the data, ERM attains a sublinear bound $
 		O(\sqrt{T\log |\F|}) $ on regret for any finite class $ \F $.
@@ -19,13 +19,13 @@ The construction must have $ |\F| \leq C $, where C is an absolute constant that
 
 \begin{solution}[]
 1. We will do a constrution with $ |\F| = 2 $, we consider the two constants functions $ f_0 = 0 $ and $ f_1 = 1 $. We
-look at the following $ (y_t)_{t=1,\cdot } $ :
+look at the following $ (y_t)_{t \geq 1 }$:
 \begin{equation*}
 	1,0,0,1,1,0,0,\ldots
 \end{equation*}
 Everytime the algorithm sees more 1 than 0, it will predict 1 and make a mistake and inversely it it sees more 0 than 1
 (If there is the same number, ties are broken arbitrarilies and the algorithm will be wrong half the time). That means that
-after T round, our algorithm makes at least $ \frac{3T}{4} - 3 $ mistakes. Conversely, either $ f_1 $ or $ f_0 $ will
+after $T$ round, our algorithm makes at least $ \frac{3T}{4} - 3 $ mistakes. Conversely, either $ f_1 $ or $ f_0 $ will
 make less than $ \frac{T}{2} $ mistakes. This means that ERM suffers linear regret on that sequence.
 \vspace{5mm}
 
@@ -45,7 +45,7 @@ We start by a decomposition of the regret :
 		 \hat{\ell}_T(\hat{f}^{T+1})}
 \end{align*}
 
-Our main technical tool is Hoeffding's Lemma. Since $ \ell $ is bounded, we have that for a fixed f, for any $
+Our main technical tool is Hoeffding's Lemma. Since $ \ell $ is bounded, we have that for a fixed $f$, for any $
 \delta > 0 $
 \begin{equation*}
 	\PP{|\bar{\ell}(f) - \hat{\ell}_t(f)| \geq \sqrt{\frac{\log \left( \frac{2}{\delta} \right)}{2t}}} \leq \delta.
@@ -86,7 +86,7 @@ Integrating this bound with Lemma~\ref{lemma:tail_bounds}, we get
 \begin{equation*}
 	T \EE{\bar{\ell}(f^{*})- \hat{\ell_T}(\hat{f^{T+1}})} \leq \sqrt{2T \log (2|\F|)}.
 \end{equation*}
-It remains to deal with the term $ \sum_{t=1}^{T}\ell(\hat{f}^t(x_y,y_t)) - \bar{\ell}(f^{*}) $. Here, since $ x_t,y_t $
+It remains to deal with the term $ \sum_{t=1}^{T}\ell(\hat{f}^t(x_t,y_t)) - \bar{\ell}(f^{*}) $. Here, since $ (x_t,y_t)$
 is independent from $ \hat{f}^t $, we have that for any $ t\geq 2 $,
 \begin{equation*}
 	\EEc{\ell(\hat{f}^t(x_t),y_t)}{(x_1,y_1,\ldots, x_{t-1},y_{t-1})} = \bar{\ell}(\hat{f}^t)

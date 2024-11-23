@@ -17,7 +17,9 @@ to square loss satisfies the following bound on excess risk. With probability at
 3. Apply Bernstein’s inequality (Lemma 5) to show that with for any $f \in \F$, with probability
 at least $1-\delta$,
 \[ \E(f) \leq 2(\wh L(f)-\wh L(f^*))+\frac{C \log(1/\delta)}{T},\] 
-for an absolute constant C, where $\wh L(f) = \frac{1}{T} \sum_{t=1}^T (f(x^t) - y^t)^2$.
+for an absolute constant $C$, where $\wh L(f) = \frac{1}{T} \sum_{t=1}^T (f(x^t) - y^t)^2$.
+
+\noindent
 4. Extend this probabilistic inequality to simultaneously hold for all $f \in \F$ by taking the 
 union bound over $f \in \F$. Conclude as a consequence that the bound holds for $\wh f$, the empirical minimizer, implying (1.38)
 \begin{solution}[]
@@ -44,7 +46,7 @@ By definition $f : \X \to [0,1]$.
     Then with probability at least $1-\delta$,
     \[ \frac{1}{T}\sum_{i=1}^{T}Z_i -\EE{Z}\leq \sigma\sqrt{\frac{2\log(1/\delta)}{T}}+\frac{B\log(1/\delta)}{3T}.\]
 \end{lemma}
-Let's apply this Lemma \ref{lemma:Bernstein} to $-Z_i(f)$ where $B= 2$ and $\sigma \leq 2\sqrt{\E(f)}$ because of question 2.    
+Applying Lemma \ref{lemma:Bernstein} for $Z_i=-Z_i(f)$ where $B= 2$ and $\sigma = 2\sqrt{\E(f)}$ yields    
 \begin{equation}
     \label{equation:Bernstein}
     \wh L(f^*)- \wh L(f) + \E(f) \leq \sqrt{\frac{8\E(f)\log(1/\delta)}{T}}+\frac{2\log(1/\delta)}{3T}

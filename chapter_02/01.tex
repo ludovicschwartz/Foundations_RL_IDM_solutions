@@ -25,7 +25,7 @@
          \[ \EE{\Reg} = \EE{\sum_{t=1}^T \biprod{p^t}{\bsl^t}} - \min_{\pi \in [A]}\sum_{t=1}^T \biprod{\boldsymbol{e}_\pi}{\bsl^t}.\]
 
 Since only the loss of the chosen action $\pi_t \sim p_t$ is observed, we cannot directly appeal to the Exponential Weights Algorithm. 
-The solution is to build an unbiased estimate of the vector lt from the single real-valued observation $\bsl^t(\pi^t)$.
+The solution is to build an unbiased estimate of the vector $ \bsl^t $ from the single real-valued observation $\bsl^t(\pi^t)$.
 
 1. Prove that the vector $\wt {\bsl^t} (\cdot| \pi^t)$ defined by
 \[ \wt{\bsl^t}(\pi | \pi^t) = \frac{\bsl^t(\pi)}{p^t(\pi)} \mathbf{1}_{\{\pi^t=\pi\}}\]
@@ -33,12 +33,15 @@ is an \textit{unbiased estimate} for $\bsl^t(\pi)$ for all $\pi \in [A]$. In vec
 \[ \EEs{\wt{\bsl^t}(\cdot|\pi^t)}{\pi^t \sim p^t}=\bsl^t.\]
 
 Conclude that 
-\[ \EE{\Reg} = \EE{\sum_{t=1}^T \EEs{\biprod{\boldsymbol{e}_\pi}{\wt \bsl^t}}{\pi^t \sim p^t}  -\min_{\pi \in [A]}\EE{\sum_{t=1}^T\EEs{\biprod{\boldsymbol{e}_\pi}{\wt \bsl^t}}{\pi^t \sim p^t}}}\]
+\begin{equation*}
+	\EE{\Reg} = \EE{\sum_{t=1}^T \EEs{\biprod{p^t}{\wt \bsl^t}}{\pi^t \sim p^t}}  -\min_{\pi \in
+	[A]}\EE{\sum_{t=1}^T\EEs{\biprod{\boldsymbol{e}_\pi}{\wt \bsl^t}}{\pi^t \sim p^t}}.
+\end{equation*}
 
-Above, we use the shorthand $\wt \bsl^t = \bsl(\cdot|\pi^t)$.
+Above, we use the shorthand $\wt \bsl^t = \ltt(\cdot|\pi^t)$.
         
 2. Show that given $\pi'$,
-\[ \EEs{\wt \bsl^t(\pi|\pi')^2}{\pi \sim p^t}= \frac{\bsl^t(\pi')^2}{p^t(\pi^t)}, \text{ so that  } \mathbb{E}_{\pi^t\sim p^t}\EEs{\wt \bsl^t(\pi | \pi^t)^2}{\pi \sim p^t}\leq A.\]
+\[ \EEs{\wt \bsl^t(\pi|\pi')^2}{\pi \sim p'}= \frac{\bsl^t(\pi')^2}{p^t(\pi^t)}, \text{ so that  } \mathbb{E}_{\pi^t\sim p^t}\EEs{\wt \bsl^t(\pi | \pi^t)^2}{\pi \sim p^t}\leq A.\]
 
 3. Define \[ p^t(\pi) \propto \exp \left\{-\eta \sum_{s=1}^{t-1}\biprod{\boldsymbol{e}_\pi}{\wt \bsl^s(\cdot|\pi^s)}\right\},\]
 which corresponds to the exponential weights algorithm on the estimated losses $\wt \bsl^s$.
@@ -48,5 +51,56 @@ which corresponds to the exponential weights algorithm on the estimated losses $
  Hence, the price of bandit feedback in the adversarial model, as compared to full-information online learning, is only $A$.
 \end{exercise}
 
-\begin{solution}[TODO]
+\begin{solution}[]
+1. From a direct calculation 
+\begin{align*}
+	\EEs{\ltt(\pi| \pi^t)}{\pi^t \sim p^t} &= \sum_{\pi^t\in [A]} p^t(\pi_t)
+	\frac{\bsl^t(\pi)}{p^t(\pi)}\mathbb{I}_{\{ \pi^t =\pi \}}\\
+					       &= p^t(\pi) \frac{\bsl^t(\pi)}{p^t(\pi)}\\
+					       &= \bsl^t(\pi).
+\end{align*}
+In particular, by linearity of the expectation, we have that for any vector $ x \in \real ^[A] $, $ \siprod{x}{\bsl^t} =
+\EEs{\siprod{x}{\ltt}}{\pi^t\sim p^t} $.
+This directly implies 
+
+\begin{equation*}
+	\EE{\Reg} = \EE{\sum_{t=1}^T \EEs{\biprod{p^t}{\wt \bsl^t}}{\pi^t \sim p^t}}  -\min_{\pi \in
+[A]}\EE{\sum_{t=1}^T\EEs{\biprod{\boldsymbol{e}_\pi}{\wt \bsl^t}}{\pi^t \sim p^t}}.
+\end{equation*}
+
+2. By a direct computation 
+\begin{align*}
+	\EEs{\ltt(\pi|\pi ')^2}{\pi\sim p^t} &= \sum_{\pi \in [A]} p^t(\pi) \frac{\bsl^t(\pi)^2}{p^t(\pi)^2} \mathbb{I}_{\{
+	\pi ' = \pi\}}\\
+					   &= \frac{\bsl^t(\pi')^2}{p^t(\pi ')}.
+\end{align*}
+Then
+\begin{align*}
+	\EEs{\EEs{\ltt(\pi|\pi^t)}{\pi\sim p^t}}{\pi^{t} \sim p^t} &\leq \EEs{\frac{\bsl^t(\pi^t)^2}{p^t(\pi^t)}}{\pi^t \sim p^t}\\
+								   &\leq \sum_{\pi^t \in [A]} p^t(\pi^t)\cdot
+								   \frac{\bsl^t(\pi^t)^2}{p^t(\pi^t)}\\
+								   &\leq \sum_{\pi^t\in [A]}\bsl^t(\pi^t)^2 \\
+								   &\leq A.
+\end{align*}
+
+3. In that setting, applying (1.41) to the sequence of losses $ \ltt $ yields for any $ \pi \in [A] $ 
+\begin{equation*}
+	\sum_{t=1}^{T} \siprod{p^t}{\ltt} - \sum_{t=1}^{T} \siprod{\boldsymbol{e}_{\pi}}{\ltt} \leq
+	\frac{\eta}{2} \sum_{t=1}^{T}\EEs{\ltt(\pi| \pi^t)^2}{\pi\sim p^t} + \frac{\log A}{\eta}.
+\end{equation*}
+Now using the result of the first question, we can bound the regret 
+\begin{align*}
+	\EE{\Reg} &= \EE{\sum_{t=1}^T \EEs{\biprod{p^t}{\wt \bsl^t}}{\pi^t \sim p^t}}  -\min_{\pi \in
+[A]}\EE{\sum_{t=1}^T\EEs{\biprod{\boldsymbol{e}_\pi}{\wt \bsl^t}}{\pi^t \sim p^t}}\\
+		  &= \max_{\pi\in [A]} \EE{\sum_{t=1}^T \EEs{\biprod{p^t}{\wt \bsl^t}}{\pi^t \sim p^t}  -\sum_{t=1}^T\EEs{\biprod{\boldsymbol{e}_\pi}{\wt \bsl^t}}{\pi^t \sim p^t}}\\
+		  &= \max_{\pi\in [A]} \EE{\sum_{t=1}^T \biprod{p^t}{\wt \bsl^t}  -\sum_{t=1}^T \biprod{\boldsymbol{e}_\pi}{\wt \bsl^t}}\\
+		  &\leq \EE{\frac{\eta}{2}\sum_{t=1}^{T}\EEs{\ltt(\pi|\pi^t)^2}{\pi\sim p^t} + \frac{\log A}{\eta}}\\
+		  &=\EE{\frac{\eta}{2}\sum_{t=1}^{T}\EEs{\EEs{\ltt(\pi|\pi^t)^2}{\pi\sim p^t}}{\pi^t\sim p_t} +
+		  \frac{\log A}{\eta}}\\
+		  &\leq \EE{\frac{\eta}{2}\sum_{t=1}^{T} A + \frac{\log A}{\eta}}\\
+		  &= \frac{\eta A T}{2} + \frac{\log A}{\eta}\\
+		  &= \sqrt{2AT \log A},
+\end{align*}
+where the 3rd and 4th equality come from the tower rule of expectation, the first inequality from (1.41), the second
+inequality from the previous question and the last equality from the choice $ \eta = \sqrt{\frac{2\log[A]}{AT}} $.
 \end{solution}

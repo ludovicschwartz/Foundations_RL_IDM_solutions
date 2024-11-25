@@ -1,5 +1,51 @@
 %! TEX root = ./main.tex
-\begin{exercise}[TODO]{}
+
+\begin{exercise}[]{Adversarial Bandits}
+    In this exercise, we will prove a regret bound for adversarial bandits
+     (Section 2.5), where the sequence of rewards (losses) is non-stochastic.
+      To make a direct connection to the Exponential Weights Algorithm, we switch from rewards to losses,       
+       mapping $r_t$ o $1-r_t$, a transformation that does not change the problem itself. 
+       To simplify the presentation, suppose that a collection of losses
+       \[\left \{ \bsl^t(\pi) \in [0,1] : \pi \in [A], t \in [T]\right \} \]
+
+
+       for each action $\pi$ and time step $t$ is arbitrary and chosen before round $t = 1$;
+        this is referred to as an oblivious adversary. We denote by $\bsl^t = (\bsl^t (1), \ldots , \bsl^t(A))$
+         the vector of losses at time $t$. The protocol for the problem of adversarial multi-armed bandits (with losses) is as follows
+         \begin{itemize}
+            \item for $t=1,\ldots,T$ \text{do}
+            \begin{itemize}
+                \item Select decision $\pi^t\in \Pi:=\{1,\ldots,A\}$ by sampling $\pi^t \sim p^t$
+                \item Observe loss $\bsl^t(\pi^t)$
+            \end{itemize}
+         \end{itemize}
+
+         Let $p^t$ be the randomization distribution of the decision-maker on round $t$. 
+         Expected regret can be written as
+         \[ \EE{\Reg} = \EE{\sum_{t=1}^T \biprod{p^t}{\bsl^t}} - \min_{\pi \in [A]}\sum_{t=1}^T \biprod{\boldsymbol{e}_\pi}{\bsl^t}.\]
+
+Since only the loss of the chosen action $\pi_t \sim p_t$ is observed, we cannot directly appeal to the Exponential Weights Algorithm. 
+The solution is to build an unbiased estimate of the vector lt from the single real-valued observation $\bsl^t(\pi^t)$.
+
+1. Prove that the vector $\wt {\bsl^t} (\cdot| \pi^t)$ defined by
+\[ \wt{\bsl^t}(\pi | \pi^t) = \frac{\bsl^t(\pi)}{p^t(\pi)} \mathbf{1}_{\{\pi^t=\pi\}}\]
+is an \textit{unbiased estimate} for $\bsl^t(\pi)$ for all $\pi \in [A]$. In vector notation, this means 
+\[ \EEs{\wt{\bsl^t}(\cdot|\pi^t)}{\pi^t \sim p^t}=\bsl^t.\]
+
+Conclude that 
+\[ \EE{\Reg} = \EE{\sum_{t=1}^T \EEs{\biprod{\boldsymbol{e}_\pi}{\wt \bsl^t}}{\pi^t \sim p^t}  -\min_{\pi \in [A]}\EE{\sum_{t=1}^T\EEs{\biprod{\boldsymbol{e}_\pi}{\wt \bsl^t}}{\pi^t \sim p^t}}}\]
+
+Above, we use the shorthand $\wt \bsl^t = \bsl(\cdot|\pi^t)$.
+        
+2. Show that given $\pi'$,
+\[ \EEs{\wt \bsl^t(\pi|\pi')^2}{\pi \sim p^t}= \frac{\bsl^t(\pi')^2}{p^t(\pi^t)}, \text{ so that  } \mathbb{E}_{\pi^t\sim p^t}\EEs{\wt \bsl^t(\pi | \pi^t)^2}{\pi \sim p^t}\leq A.\]
+
+3. Define \[ p^t(\pi) \propto \exp \left\{-\eta \sum_{s=1}^{t-1}\biprod{\boldsymbol{e}_\pi}{\wt \bsl^s(\cdot|\pi^s)}\right\},\]
+which corresponds to the exponential weights algorithm on the estimated losses $\wt \bsl^s$.
+ Apply (1.41) to the estimated losses to show that for any $\pi \in [A]$,
+ \[ \EE{\sum_{t=1}^T \EEs{\biprod{p^t}{\wt \bsl^t}}{\pi^t \sim p^t}}-\EE{\sum_{t=1}^T \EEs{\biprod{\boldsymbol{e}_\pi}{\wt \bsl^t}}{\pi^t \sim p^t}} \lesssim \sqrt{AT\log A}\]
+
+ Hence, the price of bandit feedback in the adversarial model, as compared to full-information online learning, is only $A$.
 \end{exercise}
 
 \begin{solution}[TODO]

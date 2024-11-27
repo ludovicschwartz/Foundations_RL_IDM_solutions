@@ -32,7 +32,20 @@ $\wh f^1 ,\ldots,\wh f^t,$ by choosing $p_t = \textbf{IGW}_\gamma(\wh f^t(x^t , 
 \EEs{(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t}+\epsilon T.\]
 
 2. Show that the following inequality holds for every sequence
+\[ \sum_{t=1}^T(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))^2\leq \Reg_{\text{Sq}}(\F,T)+2\sum_{t=1}^T(r^t-\bar f(x^t,\pi^t))(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t)).\]
+3. Using Freedman’s inequality (Lemma 35), show that with probability at least $1-\delta$,
+\[\sum_{t=1}^T \EEs{(\wh f^t (x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t} \leq 2\sum_{t=1}^T(\wh f^t (x^t, \pi^t)-\bar f (x^t,\pi^t))^2 + \OO(\log(1/delta)).\]
+
+4. Using Freedman’s inequality once more, show that with probability at least $1-\delta$;
+\[ 2\sum_{t=1}^T (r^t-\bar f(x^t,\pi^t)(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))\leq \frac{1}{4}\sum_{t=1}^T \EEs{(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t}  + \OO(\epsilon^2 T + \log(1/\delta)).\]
+Conclude that with probability at least $1-\delta$,
+\[ \sum_{t=1}^T \EEs{(\wh f^t(x^t,\pi^t)- \bar f(x^t,\pi^t))^2}{\pi^t \sim p^t} \lesssim \Reg_{\text{Sq}(\F,T)}+ \epsilon^2T+\log(1/\delta).\]
+
+5. Combining the previous results, show that for any $\delta > 0$,
+ by choosing $\gamma > 0$ appropriately, we have that with probability at least $1-\delta$,
+
+ \[ \Reg \lesssim \sqrt{AT(\Reg_{\text{Sq}}(\F,T)+\log(1/\delta))} +\epsilon A^{1/2}T.  \]
 
 
-\begin{solution}[TODO]
+ \begin{solution}[TODO]
 \end{solution}

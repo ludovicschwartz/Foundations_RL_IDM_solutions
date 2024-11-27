@@ -1,6 +1,38 @@
 %! TEX root = ./main.tex
-\begin{exercise}[TODO]{}
+\begin{exercise}[]{Model Misspecification in Contextual Bandits}
 \end{exercise}
+In Proposition 10, we showed that for contextual bandits with a general class $\F$,
+ SquareCB attains regret
+ \[ \Reg \lesssim \sqrt{AT \EstSq(\F,T,\delta)}.\]
+
+ To do so, we assumed that $f^* \in \F$, where 
+ $f^*(x,a) := \EEs{r}{r\sim M^*(\cdot|x,a)}$; that is, we have a well- specified model. 
+ In practice, it may be unreasonable to assume that we have $f^* \in \F.$
+ Instead, a weaker assumption is that there exists some function $\bar f \in \F$ such that
+ \[ \max_{x \in \X, a \in \A} |\bar f(x,a)-f^*(x,a)|\leq \epsilon\]
+ for some $\epsilon >0$; that is, the model is $\epsilon$-\textit{misspecified}. In this problem,
+ we will generalize the regret bound for SquareCB to handle misspecification. Recall that in the lecture notes, we assumed
+ that the regression oracle satisfies
+ \[ \sum_{t=1}^T \EEs{(\wh f^t(x^t,\pi^t)-f^*(x^t,\pi^t))^2}{\pi^t \sim p^t}\leq \EstSq(\F,T,\delta).\]
+ In the misspecified setting, this is too much to ask for. 
+ Instead, we will assume that the oracle satisfies the following guarantee for every sequence:
+\[ \sum_{t=1}^T(\wh f^t(x^t,\pi^t)-r^t)^2 -\min_{f\in \F}\sum_{t=1}^T(f(x^t,\pi^t)-r^t)^2\leq \Reg_{\text{Sq}}(\F,T).\]
+Whenever $f^* \in \F$, we have $\EstSq(\F,T,\delta)\lesssim \Reg_{\text{Sq}}(\F,T)+ \log(1/\delta)$ with probability at least $1-\delta$.
+However, it is possible to keep $\Reg_{\text{Sq}}(\F,T)$ small even when $f^* \notin \F$.
+For example, the averaged exponential weights algorithm satisfies this guarantee with 
+$\Reg_{\text{Sq}} \lesssim \log |\F|$, regardless of whether $f^* \in \F.$
+
+We will show that for every $\delta > 0$, with an appropriate choice of $\gamma$, SquareCB (that is, the algorithm that chooses $p^t =\textbf{IGW}_\gamma(\wh f^t(x^t,\cdot))$ 
+ensures that with probability at least $1-\delta$,
+\[ \Reg \lesssim \sqrt{AT (\Reg_{\text{Sq}}(\F,T)+\log(1/\delta))} +\epsilon A^{1/2}T.\]
+
+1.  Show that for any sequence of estimators 
+$\wh f^1 ,\ldots,\wh f^t,$ by choosing $p_t = \textbf{IGW}_\gamma(\wh f^t(x^t , \cdot))$, we have that
+\[\Reg= \sum_{t=1}^T \EEs{f^*(x^t,\pi^*(x^t))}{\pi^t\sim p^t} \lesssim \frac{AT}{\gamma}+ \gamma \sum_{t=1}^T
+\EEs{(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t}+\epsilon T.\]
+
+2. Show that the following inequality holds for every sequence
+
 
 \begin{solution}[TODO]
 \end{solution}

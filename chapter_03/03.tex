@@ -28,7 +28,7 @@ ensures that with probability at least $1-\delta$,
 
 1.  Show that for any sequence of estimators 
 $\wh f^1 ,\ldots,\wh f^t,$ by choosing $p_t = \textbf{IGW}_\gamma(\wh f^t(x^t , \cdot))$, we have that
-\[\Reg= \sum_{t=1}^T \EEs{f^*(x^t,\pi^*(x^t))}{\pi^t\sim p^t} \lesssim \frac{AT}{\gamma}+ \gamma \sum_{t=1}^T
+\[\Reg= \sum_{t=1}^T \EEs{f^*(x^t,\pi^*(x^t))-f^*(x^t,\pi^t)}{\pi^t\sim p^t} \lesssim \frac{AT}{\gamma}+ \gamma \sum_{t=1}^T
 \EEs{(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t}+\epsilon T.\]
 
 2. Show that the following inequality holds for every sequence
@@ -47,5 +47,35 @@ Conclude that with probability at least $1-\delta$,
  \[ \Reg \lesssim \sqrt{AT(\Reg_{\text{Sq}}(\F,T)+\log(1/\delta))} +\epsilon A^{1/2}T.  \]
 
 
- \begin{solution}[TODO]
+ \begin{solution}[]
+    1. We follow the proof of Proposition 9, and break the "regret" term as follows:
+    \begin{align*} \EEs{f^*(x^t,\pi^*)-f^*(x^t,\pi^t)}{\pi^t\sim p^t} &= 
+        \underbrace{\EEs{\wh f^t(x^t,\wh \pi^t)-\wh f^t(x^t,\pi^t)}{\pi^t \sim p^t}}_{(I)}
+    + \underbrace{\EEs{\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t)}{\pi^t \sim p^t}}_{(II)}
+   \\
+    &+ \underbrace{\EEs{\bar f(x^t,\pi^t)- f^*(x^t,\pi^t)}{\pi^t \sim p^t}}_{(III)} +
+     \underbrace{f^*(x^t,\pi^*) - \wh f^t(x^t,\pi^t)}_{(IV)}
+    \end{align*}
+    Basically compared to the proof of Proposition 9 we have broken the second term which estimates the error on policy into two terms to account for the gap between the true model and the best model in the class. 
+    Therefore we can directly apply the results of proposition 9 for the first term and the fourth term which yield:s
+    \begin{align*}
+        (I) \qquad \EEs{\wh f^t(x^t,\wh \pi^t)-\wh f^t(x^t,\pi^t)}{\pi^t \sim p^t} &\leq \frac{A-1}{2\gamma}\\
+        (IV)\qquad  \quad \qquad f^*(x^t,\pi^*) - \wh f^t(x^t,\pi^t) &\leq \frac{A}{2\gamma}
+    \end{align*}
+    Now we have that (II) is at most:
+    \begin{align*}
+        \sqrt{\EEs{\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t)}{\pi^t \sim p^t}} \leq \frac{1}{2\gamma}+\frac{\gamma}{2}\EEs{(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t\sim p^t}
+    \end{align*}
+    And (III) is at most $\epsilon$. Finally putting all the pieces together we get the statement.
+
+2. We assume that for every sequence and every $f \in \F$ the following holds:
+\[ \sum_{t=1}^T(\wh f^t(x^t,\pi^t)-r^t)^2 -\sum_{t=1}^T(f(x^t,\pi^t)-r^t)^2\leq \Reg_{\text{Sq}}(\F,T).\]
+so it holds in particular for $f = \bar f$.
+Now remark that:
+\begin{align*}
+ &(\wh f^t(x^t,\pi^t) - r^t)^2 - (\bar f(x^t,\pi^t)-r^t)^2 = \wh f^t(x^t,\pi^t)^2 - \bar f(x^t,\pi^t)^2 -2r^t(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t)) \\
+ &= (\wh f^t(x^t,\pi^t) - \bar f(x^t,\pi^t))^2 + 2\bar f(x^t,\pi^t)(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))-2r^t(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t)) \\
+&=(\wh f^t(x^t,\pi^t) - \bar f(x^t,\pi^t))^2  -2(r^t - \bar f(x^t,\pi^t))(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t)).
+\end{align*}
+Thus summing over $t=1,\ldots,T$ and putting the second term on the RHS of the inequality yields the statement.
 \end{solution}

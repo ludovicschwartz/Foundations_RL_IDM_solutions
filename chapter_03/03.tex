@@ -34,7 +34,7 @@ $\wh f^1 ,\ldots,\wh f^t,$ by choosing $p_t = \textbf{IGW}_\gamma(\wh f^t(x^t , 
 2. Show that the following inequality holds for every sequence
 \[ \sum_{t=1}^T(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))^2\leq \Reg_{\text{Sq}}(\F,T)+2\sum_{t=1}^T(r^t-\bar f(x^t,\pi^t))(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t)).\]
 3. Using Freedman’s inequality (Lemma 35), show that with probability at least $1-\delta$,
-\[\sum_{t=1}^T \EEs{(\wh f^t (x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t} \leq 2\sum_{t=1}^T(\wh f^t (x^t, \pi^t)-\bar f (x^t,\pi^t))^2 + \OO(\log(1/delta)).\]
+\[\sum_{t=1}^T \EEs{(\wh f^t (x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t} \leq 2\sum_{t=1}^T(\wh f^t (x^t, \pi^t)-\bar f (x^t,\pi^t))^2 + \OO(\log(1/\delta)).\]
 
 4. Using Freedman’s inequality once more, show that with probability at least $1-\delta$;
 \[ 2\sum_{t=1}^T (r^t-\bar f(x^t,\pi^t)(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))\leq \frac{1}{4}\sum_{t=1}^T \EEs{(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t}  + \OO(\epsilon^2 T + \log(1/\delta)).\]
@@ -78,4 +78,29 @@ Now remark that:
 &=(\wh f^t(x^t,\pi^t) - \bar f(x^t,\pi^t))^2  -2(r^t - \bar f(x^t,\pi^t))(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t)).
 \end{align*}
 Thus summing over $t=1,\ldots,T$ and putting the second term on the RHS of the inequality yields the statement.
+
+3. We apply Freedman’s inequality to $X_t = (\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))^2$ with respect to the filtration $\F_t = \sigma(x^1,\pi^1,\ldots,x^t,\pi^t)$.
+Because $f \in \F$ take values in $[0,1]$ this imples $X_t \leq R= 4.$ and we have with probability $1-\delta$: 
+\[\sum_{t=1}^T \EEs{X_t}{t-1}  \leq \sum_{t=1}^T X_t + 8R\log(2/ \delta). \]
+which yields the final statement (because $p^t$ is $\F^{t-1}$-measurable) and where the constant in the $\OO (1/\delta)$ equals $32 \log 2$.
+Note that here we use the second inequality of Lemma 35 of the book.
+
+4. Once again we apply Freedman’s inequality this time to 
+\[X_t = 2(r^t-\bar f(x^t,\pi^t))(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t)).\]
+We remark that $\EEs{X_t}{t-1} = 2\EEs{(f^*(x^t,\pi^t)-\bar f(x^t,\pi^t))(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))}{\pi^t \sim p^t}.$
+adding and substracting $\wh f^t$ yield
+\begin{align*}\EEs{X_t}{t-1} &=2\EEs{(f^*(x^t,\pi^t)-\wh f^t(x^t,\pi^t))(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))}{\pi^t \sim p^t}\\ 
+&+2\EEs{(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t}
+\end{align*}
+
+
+Finally \[ 2\sum_{t=1}^T (r^t-\bar f(x^t,\pi^t)(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))\leq \frac{1}{4}\sum_{t=1}^T \EEs{(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t}  + \OO(\epsilon^2 T + \log(1/\delta)).\]
+Combining question 3 and 2 we have that 
+\begin{align*}
+\sum_{t=1}^T \EEs{(\wh f^t (x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t}  \leq &2 \Reg_{\text{Sq}}(\F,T)+4\sum_{t=1}^T(r^t-\bar f(x^t,\pi^t))(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))\\
+&+\OO(\log(1/\delta))
+\end{align*}
+Now the result above and rearranging terms we finally have 
+\[\sum_{t=1}^T \EEs{(\wh f^t (x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t} \lesssim \Reg_{\text{Sq}}(\F,T)+\epsilon^2T+\log(1/\delta)\]
+
 \end{solution}

@@ -88,19 +88,29 @@ Note that here we use the second inequality of Lemma 35 of the book.
 4. Once again we apply Freedman’s inequality this time to 
 \[X_t = 2(r^t-\bar f(x^t,\pi^t))(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t)).\]
 We remark that $\EEs{X_t}{t-1} = 2\EEs{(f^*(x^t,\pi^t)-\bar f(x^t,\pi^t))(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))}{\pi^t \sim p^t}.$
-adding and substracting $\wh f^t$ yield
+adding and substracting $\wh f^t$ yield:
 \begin{align*}\EEs{X_t}{t-1} &=2\EEs{(f^*(x^t,\pi^t)-\wh f^t(x^t,\pi^t))(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))}{\pi^t \sim p^t}\\ 
 &+2\EEs{(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t}
 \end{align*}
 
 
-Finally \[ 2\sum_{t=1}^T (r^t-\bar f(x^t,\pi^t)(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))\leq \frac{1}{4}\sum_{t=1}^T \EEs{(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t}  + \OO(\epsilon^2 T + \log(1/\delta)).\]
-Combining question 3 and 2 we have that 
+????? (TO DO)
+
+Finally we obtain that  \[ 2\sum_{t=1}^T (r^t-\bar f(x^t,\pi^t)(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))\leq \frac{1}{4}\sum_{t=1}^T \EEs{(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t}  + \OO(\epsilon^2 T + \log(1/\delta)).\]
+Combining question 2 and 3 it holds,
 \begin{align*}
 \sum_{t=1}^T \EEs{(\wh f^t (x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t}  \leq &2 \Reg_{\text{Sq}}(\F,T)+4\sum_{t=1}^T(r^t-\bar f(x^t,\pi^t))(\wh f^t(x^t,\pi^t)-\bar f(x^t,\pi^t))\\
 &+\OO(\log(1/\delta))
 \end{align*}
-Now the result above and rearranging terms we finally have 
+Now putting all together rearranging terms we finally have 
 \[\sum_{t=1}^T \EEs{(\wh f^t (x^t,\pi^t)-\bar f(x^t,\pi^t))^2}{\pi^t \sim p^t} \lesssim \Reg_{\text{Sq}}(\F,T)+\epsilon^2T+\log(1/\delta)\]
+
+
+
+
+5. We combine the result of question 1 with the result of question 5, this yields for any $\delta > 0$ with probability $1-\delta$:
+\[ \Reg \lesssim \frac{AT}{\gamma} + \gamma \left( \Reg_{\text{Sq}}(\F,T) + \log(1/\delta)+ \epsilon^2 T \right) + \epsilon T.\]
+
+Taking $\gamma = \sqrt{\frac{AT}{\Reg_{\text{Sq}(\F,T)}+\log(1/\delta) + \epsilon^2 T}}$  gives the desired bound (at least for $T$ large enough and omitting constants).
 
 \end{solution}
